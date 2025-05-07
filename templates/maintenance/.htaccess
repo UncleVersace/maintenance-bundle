@@ -1,0 +1,15 @@
+# Disable directory browsing
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} !^/maintenance\.html$ [NC]
+    RewriteRule ^ /maintenance.html [L,R=503]
+</IfModule>
+
+# Set the 503 status and optionally a Retry-After header
+<If "%{ENV:REDIRECT_STATUS} == '503'">
+    Header set Retry-After "3600"
+</If>
+
+ErrorDocument 503 /maintenance.html
